@@ -7,7 +7,7 @@
     "author": "Pierre Verkest, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/social",
     "category": "Social Network",
-    "version": "14.0.1.1.0",
+    "version": "17.0.1.0.0",
     "license": "AGPL-3",
     "depends": ["mail_attach_existing_attachment"],
     "data": ["views/mail_template.xml"],

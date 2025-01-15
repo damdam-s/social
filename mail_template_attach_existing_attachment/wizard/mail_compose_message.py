@@ -5,6 +5,8 @@ import re
 
 from odoo import api, models, tools
 
+from odoo.addons.mail.tools.parser import parse_res_ids
+
 
 class MailComposeMessage(models.TransientModel):
     _inherit = "mail.compose.message"
@@ -28,8 +30,8 @@ class MailComposeMessage(models.TransientModel):
             )
         )
 
-    @api.onchange("template_id", "res_id", "model")
-    def _compute_object_attachment_ids(self):
+    @api.depends("composition_mode", "model", "res_domain", "res_ids", "template_id")
+    def _compute_attachment_ids(self):
         for composer in self:
             composer.object_attachment_ids = self.env["ir.attachment"].browse()
             if (
@@ -38,11 +40,11 @@ class MailComposeMessage(models.TransientModel):
             ):
                 pattern = re.compile(composer.template_id.attach_exist_document_regex)
                 composer.object_attachment_ids |= composer._match_attachment(
-                    pattern, composer.model, [composer.res_id]
+                    pattern, composer.model, parse_res_ids(composer.res_ids)
                 )
 
-    def get_mail_values(self, res_ids):
-        res = super().get_mail_values(res_ids)
+    def _prepare_mail_values_dynamic(self, res_ids):
+        res = super()._prepare_mail_values_dynamic(res_ids)
         self.ensure_one()
         if (
             self.template_id

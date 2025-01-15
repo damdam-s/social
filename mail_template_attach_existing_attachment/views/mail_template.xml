@@ -6,7 +6,7 @@
         <field name="model">mail.template</field>
         <field name="inherit_id" ref="mail.email_template_form" />
         <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@name='advanced_settings']" position="inside">
+            <xpath expr="//notebook/page[@name='email_settings']" position="inside">
                 <group>
                     <field name="attach_exist_document_regex" />
                 </group>

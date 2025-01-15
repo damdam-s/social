@@ -3,16 +3,25 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import Form, SavepointCase
+from odoo.tests.common import Form, TransactionCase
 
 from odoo.addons.mail.tests.common import MockEmail
 
 
-class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
+class TestTemplateAttachExistingAttachment(TransactionCase, MockEmail):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.template = cls.env.ref("mail.email_template_partner")
+        cls.template = cls.env["mail.template"].create(
+            {
+                "name": "Test template",
+                "subject": "TEST",
+                "body_html": '<t t-out="4 + 9"/>',
+                "lang": "{{ object.lang }}",
+                "auto_delete": True,
+                "model_id": cls.env.ref("base.model_res_partner").id,
+            }
+        )
         cls.template.subject = "TEST"
         cls.partner_01 = cls.env["res.partner"].create(
             {
@@ -98,7 +107,7 @@ class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
         if mass_mail:
             ctx["active_ids"] = records.ids
         else:
-            ctx["default_res_id"] = self.partner_01.id
+            ctx["default_res_ids"] = self.partner_01.ids
         ctx.update(overwrite)
         return ctx
 
@@ -156,7 +165,7 @@ class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
         )
 
         with self.mock_mail_gateway():
-            composed_mail.send_mail()
+            composed_mail.action_send_mail()
 
         self.assertEqual(
             self.partner_01.message_ids[0].attachment_ids,
@@ -184,7 +193,7 @@ class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
         ).save()
 
         with self.mock_mail_gateway():
-            composed_mail.send_mail()
+            composed_mail.action_send_mail()
 
         self.assertEqual(
             self.partner_01.message_ids[0].attachment_ids,
@@ -208,7 +217,7 @@ class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
         self.assertEqual(len(composed_mail.object_attachment_ids), 0)
 
         with self.mock_mail_gateway():
-            composed_mail.send_mail()
+            composed_mail.action_send_mail()
 
         self.assertEqual(len(self.partner_01.message_ids[0].attachment_ids), 0)
         self.assertEqual(len(self.partner_02.message_ids[0].attachment_ids), 0)
