@@ -9,6 +9,7 @@ from odoo.exceptions import ValidationError
 
 class MailTemplate(models.Model):
     "Templates for sending email"
+
     _inherit = "mail.template"
 
     attach_exist_document_regex = fields.Char(
@@ -25,10 +26,11 @@ class MailTemplate(models.Model):
             try:
                 if record.attach_exist_document_regex:
                     re.compile(record.attach_exist_document_regex)
-            except re.error:
+            except re.error as re_error:
                 raise ValidationError(
                     _(
-                        "The following regular expression is invalid to select attachment: %s"
+                        "The following regular expression is invalid to "
+                        "select attachment: %s"
                     )
                     % record.attach_exist_document_regex
-                )
+                ) from re_error

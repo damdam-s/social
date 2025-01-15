@@ -217,7 +217,6 @@ class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
         )
 
     def test_switch_template_with_different_templates(self):
-
         jpg_template = self.template
         png_template = self.template.copy()
         jpg_template.attach_exist_document_regex = ".*.jpg"
