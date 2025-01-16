@@ -9,7 +9,6 @@ from odoo.addons.mail.tests.common import MockEmail
 class TestTemplateAttachExistingAttachment(SavepointCase, MockEmail):
     @classmethod
     def _create_invoice(cls):
-
         account_type = cls.env.ref("account.data_account_type_other_income")
         income_account = cls.env["account.account"].search(
             [
