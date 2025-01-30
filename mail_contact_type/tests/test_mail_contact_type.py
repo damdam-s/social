@@ -4,10 +4,10 @@
 # @author Alexandre Galdeano <alexandre.galdeano@foodles.co>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestMailContactType(SavepointCase):
+class TestMailContactType(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -165,29 +165,29 @@ class TestMailContactType(SavepointCase):
             f"{self.partner4.id},{self.partner3.id}",
         )
 
-    def test_get_name(self):
+    def test_display_name(self):
         self.assertEqual(
-            self.main_partner._get_name(),
+            self.main_partner.display_name,
             "The company",
         )
         self.assertEqual(
-            self.main_partner.with_context(show_mail_contact_types=True)._get_name(),
+            self.main_partner.with_context(show_mail_contact_types=True).display_name,
             "The company (Invoice)",
         )
         self.assertEqual(
-            self.partner1.with_context(show_mail_contact_types=True)._get_name(),
+            self.partner1.with_context(show_mail_contact_types=True).display_name,
             "The company, partner1 (Invoice)",
         )
         self.assertEqual(
-            self.partner2.with_context(show_mail_contact_types=True)._get_name(),
+            self.partner2.with_context(show_mail_contact_types=True).display_name,
             "The company, partner2 (Sale)",
         )
         self.assertEqual(
-            self.partner3.with_context(show_mail_contact_types=True)._get_name(),
+            self.partner3.with_context(show_mail_contact_types=True).display_name,
             "The company, partner3 (Purchase)",
         )
         self.assertEqual(
-            self.partner4.with_context(show_mail_contact_types=True)._get_name(),
+            self.partner4.with_context(show_mail_contact_types=True).display_name,
             "The company, partner4 (Invoice, Sale)",
         )
 

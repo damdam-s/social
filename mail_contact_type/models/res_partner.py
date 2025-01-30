@@ -46,47 +46,36 @@ class ResPartner(models.Model):
             ]
         )
 
-    def _get_name(self):
-        partner = self
-        name = super()._get_name()
+    @api.depends("mail_contact_type_ids")
+    @api.depends_context("show_mail_contact_types")
+    def _compute_display_name(self):
+        super()._compute_display_name()
+        for record in self:
+            if (
+                not self._context.get("show_mail_contact_types")
+                or not record.mail_contact_type_ids
+            ):
+                return record.display_name
 
-        if (
-            not self._context.get("show_mail_contact_types")
-            or not partner.mail_contact_type_ids
-        ):
-            return name
+            mail_contact_types_str = ", ".join(
+                record.mail_contact_type_ids.mapped("name")
+            )
 
-        mail_contact_types_str = ", ".join(partner.mail_contact_type_ids.mapped("name"))
-
-        return f"{name} ({mail_contact_types_str})"
+            record.display_name = f"{record.display_name} ({mail_contact_types_str})"
 
     @api.model
-    def _name_search(
-        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
-    ):
+    def _name_search(self, name, args=None, operator="ilike", limit=100, order=None):
         partners = super()._name_search(
-            name, args, operator=operator, limit=limit, name_get_uid=name_get_uid
+            name, args, operator=operator, limit=limit, order=order
         )
         if self._context.get("show_mail_contact_types"):
-            # unfortunately odoo base overwrite _name_search and force an *AND* operator
-            # between domain provide by `args` and other searching pattern added
-            # by that base module so here we are running an extra request to return
-            # all partners with those matching the contact type keeping
-            # same order as base
-            fields = [
-                field
-                for field in self._get_name_search_order_by_fields().split(",")
-                if field
-            ]
-            fields.append("display_name")
             partners = self.search(
                 expression.OR(
                     [
                         [("id", "in", partners)],
-                        [("mail_contact_type_ids", "=ilike", name)],
+                        [("mail_contact_type_ids.name", "=ilike", name)],
                     ]
                 ),
                 limit=limit,
-                order=",".join(fields),
             ).ids
         return partners
