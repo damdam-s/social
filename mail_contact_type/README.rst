@@ -17,18 +17,19 @@ Mail Contact Type
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fsocial-lightgray.png?logo=github
-    :target: https://github.com/OCA/social/tree/14.0/mail_contact_type
+    :target: https://github.com/OCA/social/tree/17.0/mail_contact_type
     :alt: OCA/social
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/social-14-0/social-14-0-mail_contact_type
+    :target: https://translation.odoo-community.org/projects/social-17-0/social-17-0-mail_contact_type
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/social&target_branch=14.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/social&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-Provides a method to use on mail templates to select contacts by their categories.
+Provides a method to use on mail templates to select contacts by their
+categories.
 
 .. IMPORTANT::
    This is an alpha version, the data model and design can change at any time without warning.
@@ -43,18 +44,21 @@ Provides a method to use on mail templates to select contacts by their categorie
 Usage
 =====
 
-In the **Contacts > Configuration > Mailing > Contact type** you can create mail contact type.
+In the **Contacts > Configuration > Mailing > Contact type** you can
+create mail contact type.
 
-A mail contact type is defined by a name that will be displayed in the backoffice
-and a code that will be used to find contacts related to this type.
+A mail contact type is defined by a name that will be displayed in the
+backoffice and a code that will be used to find contacts related to this
+type.
 
-Then, you will need to define the mailing types for contacts. To achieve this
-there is a field called **Mail Contact Types** into the contact form view.
+Then, you will need to define the mailing types for contacts. To achieve
+this there is a field called **Mail Contact Types** into the contact
+form view.
 
-Last, to select proper contacts from email template configuration,
-you will set the **To (partner)** field using jinja template
-like this (assuming `object` as a field `partner_id`):
-`${object.partner_id.contact_by_types('your_code1','your_code2')}`
+Last, to select proper contacts from email template configuration, you
+will set the **To (partner)** field using jinja template like this
+(assuming object as a field partner_id):
+${object.partner_id.contact_by_types('your_code1','your_code2')}
 
 Bug Tracker
 ===========
@@ -62,7 +66,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/social/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/social/issues/new?body=module:%20mail_contact_type%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/social/issues/new?body=module:%20mail_contact_type%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -70,12 +74,12 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Foodles
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -95,6 +99,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-petrus-v| 
 
-This module is part of the `OCA/social <https://github.com/OCA/social/tree/14.0/mail_contact_type>`_ project on GitHub.
+This module is part of the `OCA/social <https://github.com/OCA/social/tree/17.0/mail_contact_type>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

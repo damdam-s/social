@@ -19,7 +19,9 @@ class ResPartner(models.Model):
     def _find_contacts_by_mail_contact_types(self, codes):
         """
         Example of usage:
-        self._find_contacts_by_mail_contact_types([["customer","accounting"], "supplier"])
+        self._find_contacts_by_mail_contact_types(
+            [["customer","accounting"], "supplier"]
+        )
         return contacts that are (customer and accounting) or supplier
         """
         contacts = self.env["res.partner"].browse()
@@ -31,7 +33,7 @@ class ResPartner(models.Model):
             ).filtered(
                 lambda contact: all(
                     code in contact.mail_contact_type_ids.mapped("code")
-                    for code in code_list
+                    for code in code_list  # noqa: B023
                 )
             )
         return contacts
@@ -69,7 +71,8 @@ class ResPartner(models.Model):
             # unfortunately odoo base overwrite _name_search and force an *AND* operator
             # between domain provide by `args` and other searching pattern added
             # by that base module so here we are running an extra request to return
-            # all partners with those matching the contact type keeping same order as base
+            # all partners with those matching the contact type keeping
+            # same order as base
             fields = [
                 field
                 for field in self._get_name_search_order_by_fields().split(",")
